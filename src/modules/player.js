@@ -1,6 +1,6 @@
 import gameboard from './gameboard';
 
-const player = (() => {
+const playerFactory = () => {
   const gb = gameboard();
   let curShip = 5;
   function attackTile(x, y, oppGb) {
@@ -13,7 +13,10 @@ const player = (() => {
     if (success) { curShip -= 1; }
     return success;
   }
-  return { gb, attackTile, placeShip };
-})();
 
-export default player;
+  return {
+    gb, attackTile, placeShip,
+  };
+};
+
+export default playerFactory;

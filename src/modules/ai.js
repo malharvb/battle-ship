@@ -1,7 +1,8 @@
 import gameboard from './gameboard';
 
-const ai = (() => {
+const aiFactory = () => {
   const gb = gameboard();
+
   function initaializeAIGb() {
     gb.place(0, 0, 0, 2);
     gb.place(2, 2, 1, 0);
@@ -13,9 +14,18 @@ const ai = (() => {
   function attackTile(oppGb) {
     const x = Math.floor(Math.random() * (10));
     const y = Math.floor(Math.random() * (10));
-    return oppGb.recieveAttack(x, y);
-  }
-  return { gb, initaializeAIGb, attackTile };
-})();
 
-export default ai;
+    const result = oppGb.recieveAttack(x, y);
+
+    if (result == null) {
+      return attackTile(oppGb);
+    }
+    return result;
+  }
+
+  return {
+    gb, initaializeAIGb, attackTile,
+  };
+};
+
+export default aiFactory;

@@ -18,7 +18,6 @@ const gameboard = () => {
 
   const boardLength = 10;
   const gbGrid = Array(boardLength).fill().map(() => Array(boardLength).fill(0));
-  const missedAtks = [];
 
   function isPlacmentPossible(x, y, dir, len) {
     if (dir) {
@@ -37,7 +36,8 @@ const gameboard = () => {
     return true;
   }
 
-  function haveAllSunk(sunkValue) {
+  function haveAllSunk(ships) {
+    const sunkValue = ships.map((e) => e.isSunk());
     return sunkValue.every((el) => el === true);
   }
   /* for dir values
@@ -75,22 +75,21 @@ const gameboard = () => {
 
     return false;
   }
-  function keepTrackOfMiss(x, y) {
-    missedAtks.push([x, y]);
-  }
+
   function recieveAttack(x, y) {
+    console.log(gbGrid);
     if (gbGrid[x][y] === 1) return null;
     if (gbGrid[x][y]) {
       gbGrid[x][y] = gbGrid[x][y].hit();
-      return [x, y];
+      if (haveAllSunk(allShips)) return [x, y, 1, 0];
+      return [x, y, 1];
     }
-
-    keepTrackOfMiss(x, y);
-    return false;
+    gbGrid[x][y] = 1;
+    return [x, y, 0];
   }
 
   return {
-    place, recieveAttack, haveAllSunk, missedAtks,
+    place, recieveAttack, haveAllSunk,
   };
 };
 

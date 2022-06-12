@@ -5,9 +5,10 @@ const inputController = (() => {
     if (e.target.classList.length === 3) {
       x = e.target.classList[1].charAt(1);
       y = e.target.classList[2].charAt(1);
+      return [Number(x), Number(y)];
     }
 
-    return [Number(x), Number(y)];
+    return false;
   };
 
   const determineAxis = () => {
