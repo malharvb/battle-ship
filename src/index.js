@@ -11,35 +11,28 @@ import drawHoverShip from './dom/drawHoverShip';
 let player = playerFactory();
 let ai = aiFactory();
 let resetBtn;
+let hoverCount = 0;
+
 create.gameboard();
 ai.initaializeAIGb();
-let lenOfCurShip = 5;
-
-function resetElements() {
-  create.gameboard();
-  player = playerFactory();
-  ai = aiFactory();
-  ai.initaializeAIGb();
-  ptiles = document.querySelectorAll('.ptile');
-  ptiles.forEach((ptile) => ptile.addEventListener('click', playerShipPlace));
-  axisBtn = document.querySelector('#axisBtn');
-  axisBtn.addEventListener('click', inputController.changeAxisBtn);
-  aitiles = document.querySelectorAll('.aitile');
-  aitiles.forEach((aitile) => aitile.addEventListener('click', playerAtk));
-  resetBtn.remove();
-  changeInst(2);
-}
 
 function playerShipPlace(e) {
+  create.playerBoard();
   const coords = inputController.getCoords(e);
   const dir = inputController.determineAxis();
-  lenOfCurShip = player.placeShip(coords[0], coords[1], dir);
-  if (lenOfCurShip) drawShip(coords[0], coords[1], dir, lenOfCurShip);
-  if (lenOfCurShip === 2) changeInst(1);
+  const lenOfCurShip = player.placeShip(coords[0], coords[1], dir);
+  if (lenOfCurShip) {
+    drawShip(coords[0], coords[1], dir, lenOfCurShip);
+    hoverCount += 1;
+  }
+  if (lenOfCurShip === 2) {
+    changeInst(1);
+    aitiles.forEach((aitile) => aitile.addEventListener('click', playerAtk));
+  }
 }
 
 function playerAtk(e) {
-  if (lenOfCurShip !== 2 && lenOfCurShip) return;
+  // if (lenOfCurShip !== 2 && lenOfCurShip) return;
 
   const coords = inputController.getCoords(e);
   if (!coords) return;
@@ -63,19 +56,41 @@ function playerAtk(e) {
   }
 }
 
-// function playerShipHover(e) {
-//   const coords = inputController.getCoords(e);
-//   const dir = inputController.determineAxis();
-//   create.playerBoard();
-//   setTimeout(drawHoverShip.hover(coords[0], coords[1], dir, lenOfCurShip), 1000);
-// }
+function playerShipHover(e) {
+  if (hoverCount === 5) {
+    ptiles.forEach((ptile) => ptile.removeEventListener('mouseover', playerShipHover));
+    ptiles.forEach((ptile) => ptile.removeEventListener('mouseleave', playerShipHover));
+  }
+  const coords = inputController.getCoords(e);
+  const dir = inputController.determineAxis();
+  create.playerBoard();
+  drawHoverShip.hover(coords[0], coords[1], dir, hoverCount);
+}
 
 let ptiles = document.querySelectorAll('.ptile');
 ptiles.forEach((ptile) => ptile.addEventListener('click', playerShipPlace));
-// ptiles.forEach((ptile) => ptile.addEventListener('mouseenter', playerShipHover));
+ptiles.forEach((ptile) => ptile.addEventListener('mouseover', playerShipHover));
+ptiles.forEach((ptile) => ptile.addEventListener('mouseleave', playerShipHover));
 
 let axisBtn = document.querySelector('#axisBtn');
 axisBtn.addEventListener('click', inputController.changeAxisBtn);
 
 let aitiles = document.querySelectorAll('.aitile');
-aitiles.forEach((aitile) => aitile.addEventListener('click', playerAtk));
+
+function resetElements() {
+  create.gameboard();
+  player = playerFactory();
+  ai = aiFactory();
+  ai.initaializeAIGb();
+  ptiles = document.querySelectorAll('.ptile');
+  ptiles.forEach((ptile) => ptile.addEventListener('click', playerShipPlace));
+  ptiles.forEach((ptile) => ptile.addEventListener('mouseover', playerShipHover));
+  ptiles.forEach((ptile) => ptile.addEventListener('mouseleave', playerShipHover));
+  axisBtn = document.querySelector('#axisBtn');
+  axisBtn.addEventListener('click', inputController.changeAxisBtn);
+  hoverCount = 0;
+  aitiles = document.querySelectorAll('.aitile');
+
+  resetBtn.remove();
+  changeInst(2);
+}

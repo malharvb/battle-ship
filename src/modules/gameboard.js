@@ -77,7 +77,6 @@ const gameboard = () => {
   }
 
   function recieveAttack(x, y) {
-    console.log(gbGrid);
     if (gbGrid[x][y] === 1) return null;
     if (gbGrid[x][y]) {
       gbGrid[x][y] = gbGrid[x][y].hit();
