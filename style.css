@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+
 *
 {
     margin: 0;
@@ -6,15 +8,22 @@
     font-family: monospace;
 }
 
+body
+{
+    background-color: #f5ebe0;
+}
+
 header
 {
+    font-family: 'Concert One', cursive;
     text-align: center;
     padding: 40px;
-    font-size: 2rem;
+    font-size: 3rem;
 }
 
 #instructions
 {
+    text-decoration: underline;
     text-align: center;
     padding: 20px
 }
@@ -43,14 +52,17 @@ header
     grid-template-columns: repeat(10,1fr);
     height: 400px;
     width: 400px;
-    border: 2px solid black;
+    border: 2px solid #2b2d42;
+    background-color: #48cae4;
+    //background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
     padding: 4px;
 }
 
 .aitile, .ptile
 {
     border-radius: 4px;
-    border: 1px solid black;
+    border: 1px solid #2b2d42;
+    background-color: #caf0f8;
     margin: 2px;
 }
 
@@ -82,7 +94,13 @@ header
 
 #axisBtn
 {
-    padding: 3px;
+    height: fit-content;
+    width: fit-content;
+    border: 1px solid black;
+    padding: 2px 4px;
+    margin-left: 10px;
+    user-select: none;
+    cursor: pointer;
 }
 
 .select
@@ -104,3 +122,12 @@ header
 {
     background-color: #e76f51;
 }
+
+@media screen and (max-width: 480px) {
+    #playerGb, #aiGb
+    {
+        height: 300px;
+        width: 300px;
+    }
+  }
+  
