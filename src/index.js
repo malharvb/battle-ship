@@ -39,6 +39,7 @@ function playerAtk(e) {
     gameOver.gameOverTextDisp('p');
     const resetBtn = document.querySelector('#resetBtn');
     resetBtn.addEventListener('click', resetElements);
+    aitiles.forEach((aitile) => aitile.removeEventListener('click', playerAtk));
     return;
   }
   result = ai.attackTile(player.gb);
@@ -48,6 +49,7 @@ function playerAtk(e) {
     gameOver.gameOverTextDisp('a');
     const resetBtn = document.querySelector('#resetBtn');
     resetBtn.addEventListener('click', resetElements);
+    aitiles.forEach((aitile) => aitile.removeEventListener('click', playerAtk));
   }
 }
 
