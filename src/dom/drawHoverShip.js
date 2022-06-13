@@ -1,6 +1,5 @@
 /* This has been partially implemented */
 const drawHoverShip = (() => {
-  const lengths = [5, 4, 3, 3, 2];
   const boardLength = 10;
 
   function isPlacmentPossible(x, y, dir, len) {
@@ -27,8 +26,7 @@ const drawHoverShip = (() => {
   0: vertical
   */
 
-  function hover(x, y, dir, count) {
-    const len = lengths[count];
+  function hover(x, y, dir, len) {
     if (x > boardLength - 1 || y > boardLength - 1) return;
     if (dir === 1 && (y + len < boardLength + 1)) {
       if (!isPlacmentPossible(x, y, dir, len)) return;

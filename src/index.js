@@ -10,8 +10,6 @@ import drawHoverShip from './dom/drawHoverShip';
 
 let player = playerFactory();
 let ai = aiFactory();
-let resetBtn;
-let hoverCount = 0;
 
 create.gameboard();
 ai.initaializeAIGb();
@@ -21,10 +19,7 @@ function playerShipPlace(e) {
   const coords = inputController.getCoords(e);
   const dir = inputController.determineAxis();
   const lenOfCurShip = player.placeShip(coords[0], coords[1], dir);
-  if (lenOfCurShip) {
-    drawShip(coords[0], coords[1], dir, lenOfCurShip);
-    hoverCount += 1;
-  }
+  drawShip(coords[0], coords[1], dir, lenOfCurShip);
   if (lenOfCurShip === 2) {
     changeInst(1);
     aitiles.forEach((aitile) => aitile.addEventListener('click', playerAtk));
@@ -42,7 +37,7 @@ function playerAtk(e) {
   // for gameover mechanism
   if (result.length === 4) {
     gameOver.gameOverTextDisp('p');
-    resetBtn = document.querySelector('#resetBtn');
+    const resetBtn = document.querySelector('#resetBtn');
     resetBtn.addEventListener('click', resetElements);
     return;
   }
@@ -51,13 +46,14 @@ function playerAtk(e) {
   // for gameover mechanism
   if (result.length === 4) {
     gameOver.gameOverTextDisp('a');
-    resetBtn = document.querySelector('#resetBtn');
+    const resetBtn = document.querySelector('#resetBtn');
     resetBtn.addEventListener('click', resetElements);
   }
 }
 
 function playerShipHover(e) {
-  if (hoverCount === 5) {
+  const hoverCount = player.gb.shipToHover();
+  if (!hoverCount) {
     ptiles.forEach((ptile) => ptile.removeEventListener('mouseover', playerShipHover));
     ptiles.forEach((ptile) => ptile.removeEventListener('mouseleave', playerShipHover));
   }
@@ -88,9 +84,9 @@ function resetElements() {
   ptiles.forEach((ptile) => ptile.addEventListener('mouseleave', playerShipHover));
   axisBtn = document.querySelector('#axisBtn');
   axisBtn.addEventListener('click', inputController.changeAxisBtn);
-  hoverCount = 0;
   aitiles = document.querySelectorAll('.aitile');
 
+  const resetBtn = document.querySelector('#resetBtn');
   resetBtn.remove();
   changeInst(2);
 }

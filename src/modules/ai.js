@@ -3,12 +3,25 @@ import gameboard from './gameboard';
 const aiFactory = () => {
   const gb = gameboard();
 
+  function randomizeBoat(len) {
+    let dir;
+    const x = Math.floor(Math.random() * (10));
+    const y = Math.floor(Math.random() * (10));
+    const randomFloat = Math.random();
+    if (randomFloat < 0.5) { dir = 0; } else { dir = 1; }
+
+    const result = gb.place(x, y, dir, len);
+
+    if (!result) {
+      randomizeBoat(len);
+    }
+  }
   function initaializeAIGb() {
-    gb.place(0, 0, 0, 2);
-    gb.place(2, 2, 1, 0);
-    gb.place(9, 7, 1, 1);
-    gb.place(4, 5, 1, 3);
-    gb.place(5, 2, 0, 4);
+    randomizeBoat(0);
+    randomizeBoat(1);
+    randomizeBoat(2);
+    randomizeBoat(3);
+    randomizeBoat(4);
   }
 
   function attackTile(oppGb) {
